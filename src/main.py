@@ -23,7 +23,6 @@ def handle_conversation(user_input, chat_history):
     return bot_message
 
 
-
 # 场景 Agent 处理函数，根据选择的场景调用相应的 Agent
 def handle_scenario(user_input, history, scenario):
     agents = {
@@ -34,17 +33,18 @@ def handle_scenario(user_input, history, scenario):
     }
     return agents[scenario].respond(user_input)
 
+
 # Gradio 界面
 with gr.Blocks(title="LanguageMentor 英语私教") as language_mentor_app:
     with gr.Tab("对话练习"):
         gr.Markdown("## 练习英语对话 ")
         conversation_chatbot = gr.Chatbot(
-            placeholder="<strong>你的英语私教 DjangoPeng</strong><br><br>想和我聊什么话题都可以，记得用英语哦！",
+            placeholder="<strong>你的英语私教 Kevin</strong><br><br>想和我聊什么话题都可以，记得用英语哦！",
             height=800,
         )
 
         gr.ChatInterface(
-            fn=handle_conversation, 
+            fn=handle_conversation,
             chatbot=conversation_chatbot,
             retry_btn=None,
             undo_btn=None,
@@ -56,10 +56,10 @@ with gr.Blocks(title="LanguageMentor 英语私教") as language_mentor_app:
         gr.Markdown("## 选择一个场景学习并完成任务")
         scenario_dropdown = gr.Dropdown(choices=["求职面试", "酒店入住", "薪资谈判", "租房"], label="选择场景")
         scenario_chatbot = gr.Chatbot(
-            placeholder="<strong>你的英语私教 DjangoPeng</strong><br><br>选择场景后开始对话吧！",
+            placeholder="<strong>你的英语私教 Kevin</strong><br><br>选择场景后开始对话吧！",
             height=800,
         )
-        
+
         # 场景聊天界面
         gr.ChatInterface(
             fn=handle_scenario,
@@ -72,5 +72,9 @@ with gr.Blocks(title="LanguageMentor 英语私教") as language_mentor_app:
         )
 
 if __name__ == "__main__":
-    language_mentor_app.launch(share=True, server_name="0.0.0.0")
-
+    language_mentor_app.launch(
+        share=True,  # 创建公共链接
+        inline=True,
+        server_name="0.0.0.0",
+        server_port=8893
+    )

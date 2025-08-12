@@ -1,5 +1,5 @@
 # 导入所需的模块和类
-from langchain_ollama.chat_models import ChatOllama  # 导入 ChatOllama 模型
+from langchain_community.chat_models import ChatTongyi
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder  # 导入提示模板相关类
 from langchain_core.messages import HumanMessage  # 导入人类消息类
 from utils.logger import LOG  # 导入日志工具
@@ -10,8 +10,14 @@ from langchain_core.chat_history import (
 )
 from langchain_core.runnables.history import RunnableWithMessageHistory  # 导入带有消息历史的可运行类
 
+# 从环境变量中获取阿里云百练的 API Key
+DASHSCOPE_API_KEY = os.getenv("DASHSCOPE_API_KEY")
+# 阿里云百练的官网地址
+DASHSCOPE_API_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
 # 用于存储会话历史的字典
 store = {}
+
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     """
@@ -28,13 +34,15 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
         store[session_id] = InMemoryChatMessageHistory()
     return store[session_id]
 
+
 class ConversationAgent:
     """
     对话代理类，负责处理与用户的对话。
     """
+
     def __init__(self):
         self.name = "Conversation Agent"  # 代理名称
-        
+
         # 读取系统提示语，从文件中加载
         with open("prompts/conversation_prompt.txt", "r", encoding="utf-8") as file:
             self.system_prompt = file.read().strip()
@@ -45,12 +53,8 @@ class ConversationAgent:
             MessagesPlaceholder(variable_name="messages"),  # 消息占位符
         ])
 
-        # 初始化 ChatOllama 模型，配置模型参数
-        self.chatbot = self.prompt | ChatOllama(
-            model="llama3.1:8b-instruct-q8_0",  # 使用的模型名称
-            max_tokens=8192,  # 最大生成的token数
-            temperature=0.8,  # 生成文本的随机性
-        )
+        # 配置参数
+        self.chatbot = system_prompt | ChatTongyi(model="qwen-max")
 
         # 将聊天机器人与消息历史记录关联起来
         self.chatbot_with_history = RunnableWithMessageHistory(self.chatbot, get_session_history)
@@ -70,7 +74,7 @@ class ConversationAgent:
         """
         response = self.chatbot.invoke(
             [HumanMessage(content=user_input)],  # 将用户输入封装为 HumanMessage
-        )  
+        )
         return response.content  # 返回生成的回复内容
 
     def chat_with_history(self, user_input):
