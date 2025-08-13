@@ -16,7 +16,7 @@ def create_conversation_tab():
     with gr.Tab("对话"):
         gr.Markdown("## 练习英语对话 ")  # 对话练习说明
         conversation_chatbot = gr.Chatbot(
-            placeholder="<strong>你的英语私教 DjangoPeng</strong><br><br>想和我聊什么话题都可以，记得用英语哦！",  # 聊天机器人的占位符
+            placeholder="<strong>你的英语私教 Kevin</strong><br><br>想和我聊什么话题都可以，记得用英语哦！",  # 聊天机器人的占位符
             height=800,  # 聊天窗口高度
         )
 

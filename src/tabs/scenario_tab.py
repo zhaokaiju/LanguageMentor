@@ -52,7 +52,7 @@ def create_scenario_tab():
 
         scenario_intro = gr.Markdown()  # 场景介绍文本组件
         scenario_chatbot = gr.Chatbot(
-            placeholder="<strong>你的英语私教 DjangoPeng</strong><br><br>选择场景后开始对话吧！",  # 聊天机器人的占位符
+            placeholder="<strong>你的英语私教 Kevin</strong><br><br>选择场景后开始对话吧！",  # 聊天机器人的占位符
             height=600,  # 聊天窗口高度
         )
 

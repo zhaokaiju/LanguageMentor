@@ -53,7 +53,7 @@ def create_vocab_tab():
 
         # 初始化一个聊天机器人组件，设置占位符文本和高度
         vocab_study_chatbot = gr.Chatbot(
-            placeholder="<strong>你的英语私教 DjangoPeng</strong><br><br>开始学习新单词吧！",
+            placeholder="<strong>你的英语私教 Kevin</strong><br><br>开始学习新单词吧！",
             height=800,
         )
 
