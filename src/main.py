@@ -16,7 +16,7 @@ def main():
         share=True,  # 创建公共链接
         inline=True,
         server_name="0.0.0.0",
-        server_port=8893
+        server_port=7860
     )
 
 
